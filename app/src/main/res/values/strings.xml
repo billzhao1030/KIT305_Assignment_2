@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Assignment 2</string>
+    <string name="app_title">Stroke Rehabilitation Exercise</string>
+    <string name="game_1_name">Number in order</string>
+    <string name="game_2_name">Matching numbers</string>
+    <string name="history">History</string>
+</resources>
