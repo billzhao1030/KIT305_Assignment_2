@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.RadioGroup
+import android.widget.SeekBar
 import au.edu.utas.xunyiz.kit305.assignment2.databinding.ActivityCustomizationBinding
 
 class Customization : AppCompatActivity() {
@@ -15,7 +17,7 @@ class Customization : AppCompatActivity() {
     var gameMode = true
     var goal = true
 
-    var buttonRadius = -1
+    var buttonRadius = 50
     var numOfButtons = 3
     var hasIndication = true
     var isRandom = true
@@ -38,6 +40,8 @@ class Customization : AppCompatActivity() {
         ui.customizeBack.setOnClickListener {
             finish()
         }
+        
+
 
         //        var buttonList = mutableListOf<Map<String, Int>>()
 //
@@ -55,7 +59,19 @@ class Customization : AppCompatActivity() {
     }
 
     fun startGame(view: View) {
-        var game = Intent(this, PrescribedGame::class.java)
+        val radioButtonID: Int = ui.numOfButtonGroup.checkedRadioButtonId
+        val selectedButton: View = ui.numOfButtonGroup.findViewById(radioButtonID)
+        numOfButtons = ui.numOfButtonGroup.indexOfChild(selectedButton) + 2
+        Log.d(console_log, numOfButtons.toString())
+        isRandom = ui.randomOrderCustomize.isChecked
+        Log.d(console_log, isRandom.toString())
+        hasIndication = ui.indicationCustomize.isChecked
+        Log.d(console_log, hasIndication.toString())
+        buttonRadius = ui.sizeOfButton.progress
+        Log.d(console_log, buttonRadius.toString())
+
+
+        val game = Intent(this, PrescribedGame::class.java)
         game.putExtra("ExerciseMode", gameMode)
         game.putExtra("Goal", goal)
         game.putExtra("Rounds", round)

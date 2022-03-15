@@ -34,11 +34,12 @@ class PrescribedGame : AppCompatActivity() {
         gameMode = intent.getBooleanExtra("ExerciseMode", true)
         goal = intent.getBooleanExtra("Goal", true)
 
-        buttonRaduis = intent.getIntExtra("buttonRadius", 10)
+        buttonRaduis = intent.getIntExtra("buttonRadius", 50)
         hasIndication = intent.getBooleanExtra("hasIndication", true)
         isRandom = intent.getBooleanExtra("isRandom", true)
         numOfButtons = intent.getIntExtra("numOfButtons", 3)
 
+        // get database connection
         var db = Firebase.firestore
         var games = db.collection("games")
 
@@ -46,19 +47,6 @@ class PrescribedGame : AppCompatActivity() {
     }
 
     private fun startPrescribedGame() {
-        for (i in 1..numOfButtons) {
 
-        }
-
-        var button = Button(this)
-        val game = ui.root as ConstraintLayout
-
-        button.layoutParams = ConstraintLayout.LayoutParams(
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT
-                )
-        button.text = "new"
-
-        game.addView(button)
     }
 }

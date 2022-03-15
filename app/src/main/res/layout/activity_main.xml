@@ -19,12 +19,13 @@
 
     <Button
         android:id="@+id/game1"
-        android:layout_width="0dp"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64sp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="64dp"
         android:background="@drawable/button_default"
+
         android:onClick="selectModePrescribedGame"
         android:text="@string/game_1_name"
         android:textSize="28dp"
@@ -34,7 +35,7 @@
 
     <Button
         android:id="@+id/game2"
-        android:layout_width="0dp"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginTop="64dp"
@@ -49,7 +50,7 @@
 
     <Button
         android:id="@+id/history"
-        android:layout_width="0dp"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginTop="64dp"
@@ -66,7 +67,7 @@
         android:id="@+id/typeNameHint"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="Type your name here:"
         android:textAlignment="center"
         android:textSize="28dp"
