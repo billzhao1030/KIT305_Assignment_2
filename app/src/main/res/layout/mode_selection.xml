@@ -32,11 +32,12 @@
 
     <Button
         android:id="@+id/customize"
-        android:onClick="goToCustomize"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
+        android:onClick="goToCustomize"
         android:text="Confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
+        android:onClick="goalModeOnClick"
         android:text="Goal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseMode" />
@@ -59,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="48dp"
+        android:onClick="freeModeOnClick"
         android:text="Free"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goalMode" />
@@ -76,16 +79,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:onClick="goalRound"
         android:text="Rounds"
-        app:layout_constraintEnd_toStartOf="@+id/minute"
+        app:layout_constraintEnd_toStartOf="@+id/minutes"
         app:layout_constraintStart_toEndOf="@+id/goalSpinner"
         app:layout_constraintTop_toTopOf="@+id/goalSpinner" />
 
     <Button
-        android:id="@+id/minute"
+        android:id="@+id/minutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
+        android:onClick="goalTime"
         android:text="Minutes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/repetitions"
