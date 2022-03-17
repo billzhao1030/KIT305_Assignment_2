@@ -11,8 +11,6 @@ class HistoryActivity : AppCompatActivity() {
         ui = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(ui.root)
 
-        ui.back.setOnClickListener {
-            finish()
-        }
+
     }
 }

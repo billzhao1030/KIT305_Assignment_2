@@ -2,7 +2,6 @@ package au.edu.utas.xunyiz.kit305.assignment2
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,33 +9,35 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import au.edu.utas.xunyiz.kit305.assignment2.databinding.ActivityMainBinding
 import au.edu.utas.xunyiz.kit305.assignment2.databinding.ModeSelectionBinding
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import java.io.File
 import java.io.IOException
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 const val database_log = "DATABASE"
 const val console_log = "CUSTOM_CHECK"
 const val REQUEST_IMAGE_CAPTURE = 1
 const val PREFERENCE_FILE = "NameFile"
+const val SCREEN_X = 768
+const val SCREEN_Y = 826
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,7 +52,6 @@ class MainActivity : AppCompatActivity() {
     var goal: Boolean = true
     var rounds: Int = -1
     var time: Int = -1
-
 
     private val repetitionSpinnerItems = arrayOf(3, 4, 5, 6, 7, 8)
     private val timeSpinnerItems =
@@ -125,11 +125,6 @@ class MainActivity : AppCompatActivity() {
         ui.camera.setOnClickListener {
             requestToTakeAPicture()
         }
-    }
-
-    fun Activity.hideKeyboard() {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(ui.root.getWindowToken(), 0);
     }
 
     fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
@@ -300,6 +295,15 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             setPic(ui.myImage)
             Log.d(console_log, currentPhotoPath)
+            var file = Uri.fromFile(File(currentPhotoPath))
+
+            val storage = Firebase.storage.reference.child("images/${file.lastPathSegment}")
+            storage.putFile(file).
+                    addOnSuccessListener {
+                        Log.d(database_log, "file stored");
+                    }.addOnFailureListener {
+                        Log.d(database_log, "not stored");
+                    }
         }
     }
 

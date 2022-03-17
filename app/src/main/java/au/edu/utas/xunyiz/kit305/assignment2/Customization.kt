@@ -40,21 +40,28 @@ class Customization : AppCompatActivity() {
         ui.customizeBack.setOnClickListener {
             finish()
         }
-        
 
+        ui.sizeOfButton.setOnSeekBarChangeListener((object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int,
+                                           fromUser: Boolean) {
+                when {
+                    progress == 2 -> ui.size.text = "Small"
+                    progress == 3 -> ui.size.text = "Normal"
+                    progress == 4 -> ui.size.text = "Big"
+                }
+            }
 
-        //        var buttonList = mutableListOf<Map<String, Int>>()
-//
-//        ui.button.setOnClickListener {
-//            var currentTime = SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Date())
-//            currentTime = SimpleDateFormat("HH:mm:ss").format(Date())
-//            Log.d(console_log, currentTime)
-//            buttonList.add(mapOf(currentTime to 1))
-//            printList(buttonList)
-//        }
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+            }
+        })  )
     }
 
-    fun customization_back(view: View) {
+    fun customizationBack(view: View) {
         finish()
     }
 

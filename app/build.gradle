@@ -53,5 +53,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.android.support:multidex:1.0.3'
 
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
     implementation "io.grpc:grpc-okhttp:1.32.2"
 }

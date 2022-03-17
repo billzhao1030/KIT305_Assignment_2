@@ -12,11 +12,13 @@
         <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/activity_customization.xml" value="0.4" />
         <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/activity_designed_game.xml" value="0.34375" />
         <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/activity_game_finish.xml" value="0.3173076923076923" />
-        <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/activity_history.xml" value="0.36666666666666664" />
+        <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/activity_history.xml" value="0.2" />
         <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/activity_main.xml" value="0.348731884057971" />
-        <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/activity_prescribed_game.xml" value="0.2983974358974359" />
+        <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/activity_prescribed_game.xml" value="0.264" />
+        <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/history_list_item.xml" value="0.21217948717948718" />
         <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/history_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/mode_selection.xml" value="0.5" />
+        <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/mode_selection.xml" value="0.264" />
+        <entry key="..\:/KIT/KIT_2022/2022_S1/KIT305/Assignment/Assignment2/app/src/main/res/layout/pause_button.xml" value="0.4" />
       </map>
     </option>
   </component>

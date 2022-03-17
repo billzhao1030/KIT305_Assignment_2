@@ -138,10 +138,11 @@
         android:id="@+id/sizeHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="How big the button will be"
-        android:textSize="24sp"
+        android:layout_marginTop="32dp"
+        android:text="The button size will be: "
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.36"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sizeOfButton" />
 
@@ -150,9 +151,9 @@
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28sp"
-        android:progress="50"
-        android:min="48"
-        android:max="52"
+        android:progress="3"
+        android:min="2"
+        android:max="4"
         android:scaleX="1.2"
         android:scaleY="1.2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -161,7 +162,7 @@
 
     <Button
         android:id="@+id/customizeBack"
-        android:onClick="customization_back"
+        android:onClick="customizationBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back"
@@ -183,16 +184,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/buttonHintSize"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_margin="36dp"
-        android:layout_marginTop="44dp"
-        android:background="@drawable/button_size_circle"
-        android:enabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sizeHint" />
+    <TextView
+        android:id="@+id/size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:text="Normal"
+        android:textSize="28sp"
+        app:layout_constraintStart_toEndOf="@+id/sizeHint"
+        app:layout_constraintTop_toTopOf="@+id/sizeHint" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
