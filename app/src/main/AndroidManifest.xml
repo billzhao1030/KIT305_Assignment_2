@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".GameFinish"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".DesignedGame"
             android:exported="false" />

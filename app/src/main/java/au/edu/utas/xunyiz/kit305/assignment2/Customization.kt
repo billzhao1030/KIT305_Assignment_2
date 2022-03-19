@@ -37,6 +37,8 @@ class Customization : AppCompatActivity() {
         Log.d(console_log, gameMode.toString())
         Log.d(console_log, goal.toString())
 
+
+
         ui.customizeBack.setOnClickListener {
             finish()
         }
