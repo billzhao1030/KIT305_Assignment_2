@@ -24,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import au.edu.utas.xunyiz.kit305.assignment2.databinding.ActivityMainBinding
 import au.edu.utas.xunyiz.kit305.assignment2.databinding.ModeSelectionBinding
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
@@ -64,6 +66,8 @@ class MainActivity : AppCompatActivity() {
         ui = ActivityMainBinding.inflate(layoutInflater)
         modeSelection = ModeSelectionBinding.inflate(layoutInflater)
         setContentView(ui.root)
+
+        ui.repetitionSummary.text = "Loading..."
 
         // username setting and store
         var settings = getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE)
@@ -122,9 +126,35 @@ class MainActivity : AppCompatActivity() {
 
         modeSelection.goalSpinner.setSelection(2)
 
-//        ui.camera.setOnClickListener {
-//            requestToTakeAPicture()
-//        }
+        getHistorySummary()
+    }
+
+    private fun getHistorySummary() {
+        val db = Firebase.firestore
+        val games = db.collection("games")
+
+        var prescribedTotal: Int = 0
+        var designedToal: Int = 0
+
+        games
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val game = document.toObject<Game>()
+                    Log.d(database_log, game.repetition.toString())
+                    if (game.gameType == true) {
+                        prescribedTotal += game.repetition!!
+                        Log.d(database_log, "p${prescribedTotal}")
+                    } else {
+                        designedToal += game.repetition!!
+                    }
+                }
+
+                var str = "You have completed\n${prescribedTotal} repetitions in Number in order\n" +
+                        "${designedToal} repetitions in Matching numbers"
+
+                ui.repetitionSummary.text = str
+            }
     }
 
     fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
@@ -141,16 +171,16 @@ class MainActivity : AppCompatActivity() {
 
     // Mode selection
     fun goalModeOnClick(view: View) {
-        modeSelection.goalMode.setBackgroundColor(Color.GREEN)
-        modeSelection.freeMode.setBackgroundColor(Color.GRAY)
+        modeSelection.goalMode.setBackgroundResource(R.drawable.button_default)
+        modeSelection.freeMode.setBackgroundResource(R.drawable.button_default_highlight)
         exerciseMode = true
 
         buttonState(true)
     }
 
     fun freeModeOnClick(view: View) {
-        modeSelection.freeMode.setBackgroundColor(Color.GREEN)
-        modeSelection.goalMode.setBackgroundColor(Color.GRAY)
+        modeSelection.freeMode.setBackgroundResource(R.drawable.button_default)
+        modeSelection.goalMode.setBackgroundResource(R.drawable.button_default_highlight)
         exerciseMode = false
 
         buttonState(false)
@@ -171,8 +201,8 @@ class MainActivity : AppCompatActivity() {
         goal = true
         time = -1
 
-        modeSelection.repetitions.setBackgroundColor(Color.RED)
-        modeSelection.minutes.setBackgroundColor(Color.GRAY)
+        modeSelection.repetitions.setBackgroundResource(R.drawable.button_default)
+        modeSelection.minutes.setBackgroundResource(R.drawable.button_default_highlight)
 
         modeSelection.goalSpinner.adapter = ArrayAdapter(
             this,
@@ -186,8 +216,8 @@ class MainActivity : AppCompatActivity() {
         goal = false
         rounds = -1
 
-        modeSelection.minutes.setBackgroundColor(Color.RED)
-        modeSelection.repetitions.setBackgroundColor(Color.GRAY)
+        modeSelection.minutes.setBackgroundResource(R.drawable.button_default)
+        modeSelection.repetitions.setBackgroundResource(R.drawable.button_default_highlight)
 
         modeSelection.goalSpinner.adapter = ArrayAdapter(
             this,
@@ -212,14 +242,5 @@ class MainActivity : AppCompatActivity() {
     fun viewHistory(view: View) {
         var history = Intent(this, HistoryActivity::class.java)
         startActivity(history)
-    }
-
-    fun shareCSV(view: View) {
-        var sentCSV = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "Text to share...")
-            type = "text/plain"
-        }
-        startActivity(Intent.createChooser(sentCSV, "Share via..."))
     }
 }

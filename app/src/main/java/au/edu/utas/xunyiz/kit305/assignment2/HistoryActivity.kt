@@ -32,6 +32,8 @@ class HistoryActivity : AppCompatActivity() {
 
     var gamesList = mutableListOf<Game>()
 
+    var historyNow = true
+
     var currentPosition = 0
     var currentID = ""
 
@@ -54,11 +56,6 @@ class HistoryActivity : AppCompatActivity() {
             finish()
         }
 
-
-        val db = Firebase.firestore
-        val games = db.collection("games")
-
-
         ui.historyList.adapter = HistoryAdapter(history = gamesList)
         ui.historyList.layoutManager = LinearLayoutManager(this)
 
@@ -66,22 +63,7 @@ class HistoryActivity : AppCompatActivity() {
         detail.buttonList.layoutManager = LinearLayoutManager(this)
         detail.noImage.visibility = View.INVISIBLE
 
-        ui.loading.text = "Loading..."
-        games
-            .get()
-            .addOnSuccessListener {  result ->
-                gamesList.clear()
-                Log.d(database_log, "----")
-                for (document in result) {
-                    val game = document.toObject<Game>()
-                    game.id = document.id
-
-                    gamesList.add(game)
-                }
-
-                (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
-                ui.loading.text = "${gamesList.size} Exercise(s)"
-            }
+        getGameFromDB()
 
         popupHistory.setOnCancelListener {
             detail.selfie.setImageResource(android.R.color.transparent)
@@ -183,6 +165,51 @@ class HistoryActivity : AppCompatActivity() {
         }
 
         popupHistory.show()
+    }
+
+
+    fun history1(view: View) {
+        if (!historyNow) {
+            historyNow = true
+            getGameFromDB()
+            ui.history1.setBackgroundResource(R.drawable.button_default)
+            ui.history2.setBackgroundResource(R.drawable.button_default_highlight)
+        }
+    }
+
+    fun history2(view: View) {
+        if (historyNow) {
+            historyNow = false
+            getGameFromDB()
+            ui.history2.setBackgroundResource(R.drawable.button_default)
+            ui.history1.setBackgroundResource(R.drawable.button_default_highlight)
+        }
+    }
+
+
+    private fun getGameFromDB() {
+        val db = Firebase.firestore
+        val games = db.collection("games")
+
+        ui.loading.text = "Loading..."
+        games
+            .get()
+            .addOnSuccessListener {  result ->
+                gamesList.clear()
+                (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
+                Log.d(database_log, "----")
+                for (document in result) {
+                    val game = document.toObject<Game>()
+                    game.id = document.id
+
+                    if (game.gameType == historyNow) {
+                        gamesList.add(game)
+                    }
+                }
+
+                (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
+                ui.loading.text = "${gamesList.size} Exercise(s)"
+            }
     }
 
     private fun closeHistoryDetail() {

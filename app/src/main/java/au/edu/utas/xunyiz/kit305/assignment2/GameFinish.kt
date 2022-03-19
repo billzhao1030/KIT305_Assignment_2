@@ -1,6 +1,7 @@
 package au.edu.utas.xunyiz.kit305.assignment2
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -15,9 +16,13 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import au.edu.utas.xunyiz.kit305.assignment2.databinding.ActivityGameFinishBinding
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import java.io.File
 import java.io.IOException
@@ -38,12 +43,12 @@ class GameFinish : AppCompatActivity() {
         setContentView(ui.root)
 
         id = intent.getStringExtra("ID").toString()
+        Log.d(database_log, id)
 
-        //setupText()
+        setupText()
 
         ui.imageView.visibility = View.GONE
-        ui.shareCurrent.visibility = View.GONE
-        ui.deleteCurrent.visibility = View.GONE
+
 
         ui.takePic.setOnClickListener {
             if (!isTaken) {
@@ -52,8 +57,6 @@ class GameFinish : AppCompatActivity() {
                 isTaken = true
 
                 ui.imageView.visibility = View.VISIBLE
-                ui.shareCurrent.visibility = View.VISIBLE
-                ui.deleteCurrent.visibility = View.VISIBLE
 
                 ui.takePic.text = "Back to Menu"
             } else{
@@ -65,15 +68,24 @@ class GameFinish : AppCompatActivity() {
 
     private fun setupText() {
         Log.d(database_log, "some summary")
+
+        val db = Firebase.firestore
+        val games = db.collection("games")
+
+        games.document(id)
+            .get()
+            .addOnSuccessListener { result ->
+                if (result != null) {
+                    val game = result.toObject<Game>()
+                    Log.d(database_log, game.toString())
+
+                    if (game != null) {
+                        ui.gameSummary.text = game.toSummary()
+                    }
+                }
+            }
     }
 
-    private fun shareThis() {
-
-    }
-
-    private fun deleteThis() {
-
-    }
 
     //step 4
     @RequiresApi(Build.VERSION_CODES.M)

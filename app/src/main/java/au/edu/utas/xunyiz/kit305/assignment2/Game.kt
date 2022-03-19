@@ -17,13 +17,18 @@ class Game {
     var buttonList: MutableList<Map<String, Int>>? = null
 
     override fun toString(): String {
-        var game = ""
-
         var type = if (gameType == true) " number in order, " else " matching numbers, "
         var mode = if (gameMode == true) " goal mode, " else " free mode, "
         var status = if (completed == true) " completed, " else " not completed, "
 
         return type + mode + status + " id: ${id}, start at: ${startTime}, end at: ${endTime}," +
                 " ${repetition} round in total, the button list: ${buttonList} "
+    }
+
+    fun toSummary(): String {
+        var type = if (gameType == true) " number in order" else " matching numbers"
+
+        return "Congratulations!\nYou have completed ${type} exercise\n" +
+        "From: ${startTime}\nTo: ${endTime}\n" + "With ${repetition} round in total"
     }
 }
