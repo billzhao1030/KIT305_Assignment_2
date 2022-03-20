@@ -26,11 +26,13 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import java.io.File
 import java.io.IOException
+import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 
 class GameFinish : AppCompatActivity() {
     private lateinit var ui: ActivityGameFinishBinding
+    lateinit var ImageUri: Uri
 
     private var isTaken = false
 
@@ -57,18 +59,23 @@ class GameFinish : AppCompatActivity() {
                 isTaken = true
 
                 ui.imageView.visibility = View.VISIBLE
-
                 ui.takePic.text = "Back to Menu"
             } else{
                 var menu = Intent(this, MainActivity::class.java)
                 startActivity(menu)
             }
         }
+
+        ui.selectImage.setOnClickListener {
+            selectImage()
+            isTaken = true
+
+            ui.imageView.visibility = View.VISIBLE
+            ui.takePic.text = "Back to Menu"
+        }
     }
 
     private fun setupText() {
-        Log.d(database_log, "some summary")
-
         val db = Firebase.firestore
         val games = db.collection("games")
 
@@ -86,6 +93,16 @@ class GameFinish : AppCompatActivity() {
             }
     }
 
+
+    fun selectImage() {
+//        val intent = Intent()
+//        intent.type = "images/*"
+//        intent.action = Intent.ACTION_GET_CONTENT
+//
+//        startActivityForResult(intent, 100)
+        val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        startActivityForResult(gallery, 100)
+    }
 
     //step 4
     @RequiresApi(Build.VERSION_CODES.M)
@@ -163,6 +180,17 @@ class GameFinish : AppCompatActivity() {
 
             val storage = Firebase.storage.reference.child("images/${id}.jpg")
             storage.putFile(file).
+            addOnSuccessListener {
+                Log.d(database_log, "file stored");
+            }.addOnFailureListener {
+                Log.d(database_log, "not stored");
+            }
+        } else if (requestCode == 100 && resultCode == RESULT_OK) {
+            ImageUri = data?.data!!
+            ui.imageView.setImageURI(ImageUri)
+
+            val storage = Firebase.storage.reference.child("images/${id}.jpg")
+            storage.putFile(ImageUri).
             addOnSuccessListener {
                 Log.d(database_log, "file stored");
             }.addOnFailureListener {

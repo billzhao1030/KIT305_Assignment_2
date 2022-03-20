@@ -9,7 +9,7 @@
         android:id="@+id/chooseMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="28dp"
         android:text="Choose the mode:"
         android:textSize="48sp"
         android:textStyle="bold|italic"

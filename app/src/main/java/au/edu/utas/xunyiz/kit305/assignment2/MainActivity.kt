@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import au.edu.utas.xunyiz.kit305.assignment2.databinding.ActivityMainBinding
 import au.edu.utas.xunyiz.kit305.assignment2.databinding.ModeSelectionBinding
+import au.edu.utas.xunyiz.kit305.assignment2.databinding.ModeSelectionDesignedBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -45,9 +46,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var ui: ActivityMainBinding
     private lateinit var modeSelection: ModeSelectionBinding
+    private lateinit var designedSelection: ModeSelectionDesignedBinding
 
     private lateinit var popupPrescribedBuilder: AlertDialog.Builder
     private lateinit var popupPrescribed: AlertDialog
+
+    private lateinit var popupDesignedBuilder: AlertDialog.Builder
+    private lateinit var popupDesigned: AlertDialog
 
     // variables sent between screens
     var exerciseMode: Boolean = true
@@ -65,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         ui = ActivityMainBinding.inflate(layoutInflater)
         modeSelection = ModeSelectionBinding.inflate(layoutInflater)
+        designedSelection = ModeSelectionDesignedBinding.inflate(layoutInflater)
         setContentView(ui.root)
 
         ui.repetitionSummary.text = "Loading..."
@@ -97,6 +103,10 @@ class MainActivity : AppCompatActivity() {
 
         modeSelection.goalMode.performClick()
         modeSelection.repetitions.performClick()
+
+        popupDesignedBuilder = AlertDialog.Builder(this)
+        popupDesignedBuilder.setView(designedSelection.root)
+        popupDesigned = popupDesignedBuilder.create()
 
         // Round/time selection
         modeSelection.goalSpinner.adapter = ArrayAdapter<Int>(
@@ -141,10 +151,10 @@ class MainActivity : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val game = document.toObject<Game>()
-                    Log.d(database_log, game.repetition.toString())
+
                     if (game.gameType == true) {
                         prescribedTotal += game.repetition!!
-                        Log.d(database_log, "p${prescribedTotal}")
+
                     } else {
                         designedToal += game.repetition!!
                     }
@@ -166,6 +176,29 @@ class MainActivity : AppCompatActivity() {
 
     fun closePrescribedPopup(view: View) {
         popupPrescribed.cancel()
+    }
+
+    // designed game popup
+    fun selectModeDesignedGame(view: View) {
+        popupDesigned.show()
+    }
+
+    fun closeDesignedPopup(view: View) {
+        popupDesigned.cancel()
+    }
+
+    fun startDesignedGame(view: View) {
+        var design = Intent(this, DesignedGame::class.java)
+
+
+        val radioButtonID: Int = designedSelection.numOfPairsGroup.checkedRadioButtonId
+        val selectionButton: View = designedSelection.numOfPairsGroup.findViewById(radioButtonID)
+        var pairs = designedSelection.numOfPairsGroup.indexOfChild(selectionButton) + 1
+
+        design.putExtra("pairs", pairs)
+        design.putExtra("random", designedSelection.switchRandom.isChecked)
+
+        startActivity(design)
     }
 
 

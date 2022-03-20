@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -82,7 +83,15 @@ class HistoryActivity : AppCompatActivity() {
         @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
         override fun onBindViewHolder(holder: HistoryHolder, position: Int) {
             val game = history[position]
-            holder.ui.gameMode.text = "${position+1}. ${if (game.gameMode==true) "Goal Mode" else "Free-play Mode"}"
+            var str = ""
+
+            if (historyNow) {
+                str = if (game.gameMode==true) "Goal Mode" else "Free-play Mode"
+            } else {
+                str = "Free-play"
+            }
+
+            holder.ui.gameMode.text = "${position+1}. ${str}"
             holder.ui.startTime.text = "From: ${game.startTime}"
             holder.ui.endTime.text = "To: ${game.endTime}"
             holder.ui.repetitionHistory.text = "Repetition: ${game.repetition}"
@@ -93,7 +102,6 @@ class HistoryActivity : AppCompatActivity() {
                 currentID = history[position].id.toString()
 
                 buttonClickList = game.buttonList!!
-                Log.d(database_log, buttonClickList.toString())
                 (detail.buttonList.adapter as BtnListAdapter).notifyDataSetChanged()
 
                 showHistoryDetail()
@@ -114,9 +122,16 @@ class HistoryActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: BtnListHolder, position: Int) {
-            val buttonClick = buttonClickList[position]
+            var buttonClick = buttonClickList[position]
 
-            holder.ui.singleBtnClick.text = "${buttonClick.keys} : Button ${buttonClick.values}"
+            if (buttonClick.containsValue(10)|| buttonClick.containsValue(20) || buttonClick.containsValue(30) || buttonClick.containsValue(40) || buttonClick.containsValue(50)) {
+                var str = "${buttonClick.keys} : Button ${buttonClick.values}"
+                str = "${str.substring(0, str.length - 2)}] Incorrect"
+                holder.ui.singleBtnClick.text = str
+                holder.ui.singleBtnClick.setTextColor(Color.RED)
+            } else {
+                holder.ui.singleBtnClick.text = "${buttonClick.keys} : Button ${buttonClick.values}"
+            }
         }
 
         override fun getItemCount(): Int {
@@ -129,6 +144,19 @@ class HistoryActivity : AppCompatActivity() {
         detail.buttonList.adapter = BtnListAdapter(list = buttonClickList)
         detail.buttonList.layoutManager = LinearLayoutManager(this)
 
+
+        if (historyNow) {
+            detail.clickSummary.visibility = View.VISIBLE
+            detail.buttonList.visibility = View.VISIBLE
+            detail.textView.visibility = View.VISIBLE
+            var summaryClick = "Total button presses: ${gamesList[currentPosition].totalClick}\n" +
+                    "Correct button presses: ${gamesList[currentPosition].rightClick}"
+            detail.clickSummary.text = summaryClick
+        } else {
+            detail.clickSummary.visibility = View.GONE
+            detail.buttonList.visibility = View.GONE
+            detail.textView.visibility = View.GONE
+        }
 
         if (gamesList[currentPosition].completed == true) {
             val storageRef = FirebaseStorage.getInstance().reference.child("images/${currentID}.jpg")
@@ -199,10 +227,21 @@ class HistoryActivity : AppCompatActivity() {
                 (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
                 Log.d(database_log, "----")
                 for (document in result) {
+                    var totalClick = 0
+                    var rightClick = 0
+
                     val game = document.toObject<Game>()
                     game.id = document.id
 
                     if (game.gameType == historyNow) {
+                        for (buttonClick in game.buttonList!!) {
+                            totalClick++
+                            if (!(buttonClick.containsValue(10) || buttonClick.containsValue(20) || buttonClick.containsValue(30) || buttonClick.containsValue(40) || buttonClick.containsValue(50))) {
+                                rightClick++
+                            }
+                        }
+                        game.rightClick = rightClick
+                        game.totalClick = totalClick
                         gamesList.add(game)
                     }
                 }
@@ -221,7 +260,7 @@ class HistoryActivity : AppCompatActivity() {
         var games = ""
 
         for (game in gamesList) {
-            games += "${game.toString()}\n"
+            games += "${game.toTable()}\n"
         }
 
         var sentCSV = Intent().apply {
@@ -233,7 +272,7 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     fun shareThis(view: View) {
-        var game = gamesList[currentPosition].toString()
+        var game = gamesList[currentPosition].toTable()
 
         var sentCSV = Intent().apply {
             action = Intent.ACTION_SEND

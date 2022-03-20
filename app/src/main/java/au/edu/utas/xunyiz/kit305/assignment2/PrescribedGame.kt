@@ -67,10 +67,6 @@ class PrescribedGame : AppCompatActivity(), View.OnClickListener {
 
         gamePreset()
 
-        if (!gameMode) {
-            pause.goToMenu.text = "Finish Exercise"
-        }
-
         // get database connection
         var db = Firebase.firestore
         var games = db.collection("games")
@@ -278,7 +274,10 @@ class PrescribedGame : AppCompatActivity(), View.OnClickListener {
     }
 
     fun complete_game() {
-        completed = true
+        if (gameMode) {
+            completed = true
+        }
+
         var db = Firebase.firestore
         var games = db.collection("games")
 
@@ -293,12 +292,17 @@ class PrescribedGame : AppCompatActivity(), View.OnClickListener {
             .addOnSuccessListener { Log.d(database_log, "endtime update") }
             .addOnFailureListener { Log.d(database_log, "endtime not update")}
 
-        var finishGame = Intent(this, GameFinish::class.java)
+        if (gameMode || completed) {
+            var finishGame = Intent(this, GameFinish::class.java)
 
-        finishGame.putExtra("ID", id)
-        finishGame.putExtra("completed", completed)
+            finishGame.putExtra("ID", id)
+            finishGame.putExtra("completed", completed)
 
-        startActivity(finishGame)
+            startActivity(finishGame)
+        } else {
+            var menu = Intent(this, MainActivity::class.java)
+            startActivity(menu)
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -320,6 +324,11 @@ class PrescribedGame : AppCompatActivity(), View.OnClickListener {
                         btnNow = 1
                         roundCompleted++
 
+                        if (!gameMode) {
+                            completed = true
+                            pause.goToMenu.text = "Finish Exercise"
+                        }
+
                         uploadRound()
                         if (gameMode) {
                             if (this.round != -1) {
@@ -340,7 +349,7 @@ class PrescribedGame : AppCompatActivity(), View.OnClickListener {
                     highlight(btnNow)
                 } else {
                     var buttonRecord = mapOf<String, Int>(
-                        time to v.id
+                        time to v.id * 10
                     )
 
                     buttonList.add(buttonRecord)

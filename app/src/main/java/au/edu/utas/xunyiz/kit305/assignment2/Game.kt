@@ -16,6 +16,9 @@ class Game {
 
     var buttonList: MutableList<Map<String, Int>>? = null
 
+    var totalClick: Int = 0
+    var rightClick: Int = 0
+
     override fun toString(): String {
         var type = if (gameType == true) " number in order, " else " matching numbers, "
         var mode = if (gameMode == true) " goal mode, " else " free mode, "
@@ -30,5 +33,17 @@ class Game {
 
         return "Congratulations!\nYou have completed ${type} exercise\n" +
         "From: ${startTime}\nTo: ${endTime}\n" + "With ${repetition} round in total"
+    }
+
+    fun toTable(): String {
+        var type = if (gameType == true) " number in order, " else " matching numbers, "
+        var mode = if (gameMode == true) " goal mode, " else " free mode, "
+        var status = if (completed == true) " completed, " else " not completed, "
+
+        var prescribed = if (gameType == true) ", total press of buttons: ${totalClick}, " +
+                "correct press of buttons: ${rightClick}, The button list: ${buttonList} " else ""
+
+        return "Exercise:${type} Start at: ${startTime}, End at: ${endTime}," +
+                " ${repetition} round(s) in total${prescribed}"
     }
 }
