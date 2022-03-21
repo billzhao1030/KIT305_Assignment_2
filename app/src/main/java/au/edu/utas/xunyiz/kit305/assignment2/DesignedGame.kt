@@ -99,7 +99,7 @@ class DesignedGame : AppCompatActivity(), View.OnLongClickListener {
 
             Log.d(database_log, btn.text.toString())
             btn.setBackgroundResource(R.drawable.round_button)
-            btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
+            btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
 
             val metrics = Resources.getSystem().displayMetrics
             var scale:Int = (100 * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
@@ -157,8 +157,8 @@ class DesignedGame : AppCompatActivity(), View.OnLongClickListener {
             btn.setText("${(button+1)/2}")
 
 
-            //btn.setOnLongClickListener(this)
-            //btn.setOnDragListener(dragListener)
+            btn.setOnLongClickListener(this)
+            btn.setOnDragListener(dragListener)
         }
     }
 
@@ -212,18 +212,20 @@ class DesignedGame : AppCompatActivity(), View.OnLongClickListener {
                 if (view.id / 10  != v.id /10) {
                     v.visibility = View.VISIBLE
                     inBound = false
+                    Log.d(database_log, inBound.toString())
                 } else {
                     inBound = true
+                    Log.d(database_log, inBound.toString())
                 }
                 view.invalidate()
                 true
             }
             DragEvent.ACTION_DRAG_LOCATION -> true
             DragEvent.ACTION_DRAG_EXITED -> {
-                if (view.id / 10  != v.id /10) {
-                    v.visibility = View.INVISIBLE
-                    inBound = false
-                }
+                v.visibility = View.INVISIBLE
+                inBound = false
+                Log.d(database_log, inBound.toString())
+
                 view.invalidate()
 
                 true
@@ -233,9 +235,10 @@ class DesignedGame : AppCompatActivity(), View.OnLongClickListener {
                 val dragData = item.text
                 //Toast.makeText(this, dragData, Toast.LENGTH_SHORT).show()
 
-                view.invalidate()
                 if (inBound == true) {
                     pairMade++
+                } else {
+                    v.visibility = View.VISIBLE
                 }
 
                 if (pairMade == numOfPairs) {
@@ -253,12 +256,11 @@ class DesignedGame : AppCompatActivity(), View.OnLongClickListener {
                     completed = true
                     pause.goToMenuD.text = "Finish Exercise"
                 }
+                inBound = false
 
-                //v.visibility = View.VISIBLE
                 true
             }
             DragEvent.ACTION_DRAG_ENDED -> {
-
                 true
             }
             else -> false
@@ -329,8 +331,7 @@ class DesignedGame : AppCompatActivity(), View.OnLongClickListener {
             view.visibility = View.INVISIBLE
         }
 
-        Log.d(database_log, view!!.id.toString())
-
+        ui.designed.setOnDragListener(dragListener)
 
         return true
     }
