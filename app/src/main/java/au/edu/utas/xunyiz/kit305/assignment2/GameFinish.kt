@@ -47,6 +47,7 @@ class GameFinish : AppCompatActivity() {
         setContentView(ui.root)
 
         id = intent.getStringExtra("ID").toString()
+        isRound = intent.getBooleanExtra("isRound", true)
         Log.d(database_log, id)
 
         setupText()
@@ -89,7 +90,18 @@ class GameFinish : AppCompatActivity() {
                     Log.d(database_log, game.toString())
 
                     if (game != null) {
-                        ui.gameSummary.text = if (isRound) game.toSummaryRound() else game.toSummaryTime()
+                        var s = ""
+
+                        if (game.gameType == true) {
+                            if (game.gameMode == true) {
+                                s = if (isRound) game.toSummaryRound() else game.toSummaryTime()
+                            } else {
+                                s = game.toSummary()
+                            }
+                        } else {
+                            s = game.toSummary()
+                        }
+                        ui.gameSummary.text = s
                     }
                 }
             }

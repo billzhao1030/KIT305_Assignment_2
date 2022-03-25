@@ -32,6 +32,7 @@ class HistoryActivity : AppCompatActivity() {
     private lateinit var popupHistory: AlertDialog
 
     var gamesList = mutableListOf<Game>()
+    var gameOriginal = mutableListOf<Game>()
 
     var historyNow = true
 
@@ -207,6 +208,49 @@ class HistoryActivity : AppCompatActivity() {
         popupHistory.show()
     }
 
+    fun searchTime(view: View) {
+        val db = Firebase.firestore
+        val games = db.collection("games")
+
+        ui.loading.text = "Loading..."
+        games
+            .get()
+            .addOnSuccessListener {  result ->
+                gamesList.clear()
+                (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
+                Log.d(database_log, "----")
+                var searchText = ui.searchBox.text
+                if (searchText.trim() == "") {
+                    return@addOnSuccessListener
+                }
+                for (document in result) {
+                    var totalClick = 0
+                    var rightClick = 0
+
+                    val game = document.toObject<Game>()
+                    game.id = document.id
+
+                    if (game.gameType == historyNow) {
+                        if (game.id!!.contains(searchText)) {
+                            for (buttonClick in game.buttonList!!) {
+                                totalClick++
+                                if (!(buttonClick.containsValue(10) || buttonClick.containsValue(20) || buttonClick.containsValue(30) || buttonClick.containsValue(40) || buttonClick.containsValue(50))) {
+                                    rightClick++
+                                }
+                            }
+                            game.rightClick = rightClick
+                            game.totalClick = totalClick
+
+                            gamesList.add(game)
+                        }
+                    }
+                }
+
+                (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
+                ui.loading.text = "${gamesList.size} Exercise(s)"
+            }
+    }
+
 
     fun history1(view: View) {
         if (!historyNow) {
@@ -257,6 +301,8 @@ class HistoryActivity : AppCompatActivity() {
                         gamesList.add(game)
                     }
                 }
+
+                gameOriginal = gamesList
 
                 (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
                 ui.loading.text = "${gamesList.size} Exercise(s)"
@@ -330,8 +376,6 @@ class HistoryActivity : AppCompatActivity() {
             .setNegativeButton("No", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         val alert = builder.create()
         alert.show()
-
-
     }
 
     @SuppressLint("SetTextI18n")

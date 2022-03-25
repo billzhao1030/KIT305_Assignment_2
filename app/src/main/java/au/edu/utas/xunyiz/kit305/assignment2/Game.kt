@@ -42,13 +42,21 @@ class Game {
                 "With ${repetition} round in total"
     }
 
+    fun toSummary(): String {
+        var type = if (gameType == true) " number in order" else " matching numbers"
+
+        return "Congratulations!\nYou have completed ${type} exercise\n" +
+                "From: ${startTime}\nTo: ${endTime}\n" + "With ${repetition} round in total"
+    }
+
     fun toTable(): String {
         var type = if (gameType == true) " number in order, " else " matching numbers, "
+        var complete = if (completed == true) "completed" else "not completed"
 
         var prescribed = if (gameType == true) ", total press of buttons: ${totalClick}, " +
                 "correct press of buttons: ${rightClick}, The button list: ${buttonList} " else ""
 
-        return "Exercise:${type} Start at: ${startTime}, End at: ${endTime}," +
+        return "Exercise:${type} ${complete}, Start at: ${startTime}, End at: ${endTime}," +
                 " ${repetition} round(s) in total${prescribed}"
     }
 }

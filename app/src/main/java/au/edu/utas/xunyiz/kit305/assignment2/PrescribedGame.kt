@@ -297,6 +297,7 @@ class PrescribedGame : AppCompatActivity(), View.OnClickListener {
 
             finishGame.putExtra("ID", id)
             finishGame.putExtra("completed", completed)
+            finishGame.putExtra("isRound", (round!=-1))
 
             startActivity(finishGame)
         } else {

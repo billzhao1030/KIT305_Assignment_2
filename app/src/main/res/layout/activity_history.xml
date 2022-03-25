@@ -39,42 +39,39 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historyList"
-        android:layout_width="693dp"
-        android:layout_height="702dp"
+        android:layout_width="698dp"
+        android:layout_height="670dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/historyBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/history1"
-        app:layout_constraintVertical_bias="0.477" />
+        app:layout_constraintTop_toBottomOf="@+id/searchBox" />
 
     <Button
         android:id="@+id/shareAll"
         android:layout_width="250dp"
         android:layout_height="80dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="52dp"
         android:layout_marginBottom="16dp"
         android:onClick="shareAll"
         android:text="Share all"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/undoYes" />
 
     <Button
         android:id="@+id/historyBack"
         android:layout_width="250dp"
         android:layout_height="80dp"
         android:layout_marginStart="40dp"
-        android:layout_marginBottom="16dp"
         android:text="Back to menu"
         android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/shareAll" />
 
     <TextView
         android:id="@+id/loading"
@@ -91,44 +88,57 @@
     <Button
         android:id="@+id/undoYes"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="24dp"
         android:background="@drawable/button_default"
         android:onClick="undoYes"
         android:text="Yes"
-        app:layout_constraintBottom_toBottomOf="@+id/undoHint"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.758"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/historyList" />
+        app:layout_constraintStart_toEndOf="@+id/undoNo"
+        app:layout_constraintTop_toTopOf="@+id/undoHint" />
 
     <Button
         android:id="@+id/undoNo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="300dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="40dp"
         android:background="@drawable/button_default"
         android:onClick="undoNo"
         android:text="No"
-        app:layout_constraintBottom_toBottomOf="@+id/undoHint"
-        app:layout_constraintEnd_toStartOf="@+id/undoYes"
-        app:layout_constraintHorizontal_bias="0.796"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/undoYes"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/undoHint"
+        app:layout_constraintTop_toTopOf="@+id/undoHint" />
 
     <TextView
         android:id="@+id/undoHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="20dp"
         android:text="Undo The Deletion?"
+
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/historyBack"
-        app:layout_constraintEnd_toStartOf="@+id/undoNo"
-        app:layout_constraintTop_toBottomOf="@+id/historyList"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/historyList" />
+
+    <Button
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:onClick="searchTime"
+        android:text="search"
+        app:layout_constraintStart_toEndOf="@+id/searchBox"
+        app:layout_constraintTop_toTopOf="@+id/searchBox" />
+
+    <EditText
+        android:id="@+id/searchBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loading" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
