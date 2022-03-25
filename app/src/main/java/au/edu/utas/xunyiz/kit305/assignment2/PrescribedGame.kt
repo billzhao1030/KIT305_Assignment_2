@@ -246,7 +246,7 @@ class PrescribedGame : AppCompatActivity(), View.OnClickListener {
         var minutes = ((timeLeft / 1000) / 60).toInt()
         var seconds = ((timeLeft / 1000) % 60).toInt()
 
-        ui.progressText.text = "${minutes} min ${seconds}s left "
+        ui.progressText.text = "${minutes} min ${seconds}s\n Round ${roundCompleted + 1} "
     }
 
 

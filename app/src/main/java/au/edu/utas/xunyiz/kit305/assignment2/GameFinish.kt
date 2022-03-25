@@ -38,6 +38,8 @@ class GameFinish : AppCompatActivity() {
 
     private var id = ""
 
+    var isRound = true
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +89,7 @@ class GameFinish : AppCompatActivity() {
                     Log.d(database_log, game.toString())
 
                     if (game != null) {
-                        ui.gameSummary.text = game.toSummary()
+                        ui.gameSummary.text = if (isRound) game.toSummaryRound() else game.toSummaryTime()
                     }
                 }
             }
@@ -95,11 +97,6 @@ class GameFinish : AppCompatActivity() {
 
 
     fun selectImage() {
-//        val intent = Intent()
-//        intent.type = "images/*"
-//        intent.action = Intent.ACTION_GET_CONTENT
-//
-//        startActivityForResult(intent, 100)
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         startActivityForResult(gallery, 100)
     }

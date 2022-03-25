@@ -28,17 +28,22 @@ class Game {
                 " ${repetition} round in total, the button list: ${buttonList} "
     }
 
-    fun toSummary(): String {
+    fun toSummaryRound(): String {
         var type = if (gameType == true) " number in order" else " matching numbers"
 
         return "Congratulations!\nYou have completed ${type} exercise\n" +
-        "From: ${startTime}\nTo: ${endTime}\n" + "With ${repetition} round in total"
+        "From: ${startTime}\nTo: ${endTime}"
+    }
+
+    fun toSummaryTime(): String {
+        var type = if (gameType == true) " number in order" else " matching numbers"
+
+        return "Congratulations!\nYou have completed ${type} exercise\n" +
+                "With ${repetition} round in total"
     }
 
     fun toTable(): String {
         var type = if (gameType == true) " number in order, " else " matching numbers, "
-        var mode = if (gameMode == true) " goal mode, " else " free mode, "
-        var status = if (completed == true) " completed, " else " not completed, "
 
         var prescribed = if (gameType == true) ", total press of buttons: ${totalClick}, " +
                 "correct press of buttons: ${rightClick}, The button list: ${buttonList} " else ""

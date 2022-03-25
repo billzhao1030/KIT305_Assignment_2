@@ -40,6 +40,10 @@ class HistoryActivity : AppCompatActivity() {
 
     var buttonClickList = mutableListOf<Map<String, Int>>()
 
+    var undoGame = Game()
+    var undoIndex = 1
+    var undoId = ""
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +51,10 @@ class HistoryActivity : AppCompatActivity() {
         detail = HistoryDetailsBinding.inflate(layoutInflater)
         btnList = ButtonListItemBinding.inflate(layoutInflater)
         setContentView(ui.root)
+
+        ui.undoHint.visibility = View.INVISIBLE
+        ui.undoYes.visibility = View.INVISIBLE
+        ui.undoNo.visibility = View.INVISIBLE
 
         // set up detail pop up
         popupHistoryBuilder = AlertDialog.Builder(this)
@@ -103,6 +111,10 @@ class HistoryActivity : AppCompatActivity() {
 
                 buttonClickList = game.buttonList!!
                 (detail.buttonList.adapter as BtnListAdapter).notifyDataSetChanged()
+
+                if (undoId != "") {
+                    undoNo(ui.undoNo)
+                }
 
                 showHistoryDetail()
             }
@@ -301,18 +313,66 @@ class HistoryActivity : AppCompatActivity() {
                         }
                         .addOnFailureListener { Log.d(database_log, "document not deleted")}
 
+                    undoGame = gamesList[currentPosition]
+                    undoIndex = currentPosition
+                    undoId = currentID
                     gamesList.removeAt(currentPosition)
-
-                    val storageRef = FirebaseStorage.getInstance().reference.child("images/${currentID}.jpg")
-                    storageRef.delete()
 
                     closeHistoryDetail()
 
                     (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
                     ui.loading.text = "${gamesList.size} Exercise(s)"
+
+                    ui.undoHint.visibility = View.VISIBLE
+                    ui.undoYes.visibility = View.VISIBLE
+                    ui.undoNo.visibility = View.VISIBLE
                 })
             .setNegativeButton("No", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         val alert = builder.create()
         alert.show()
+
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun undoYes(view: View) {
+        var game = undoGame
+
+        var dataMap = hashMapOf(
+            "completed" to game.completed,
+            "startTime" to game.startTime,
+            "endTime" to game.endTime,
+            "gameMode" to game.gameMode,
+            "gameType" to game.gameType,
+            "repetition" to game.repetition,
+            "buttonList" to game.buttonList
+        )
+
+        gamesList.add(undoIndex, undoGame)
+
+        val db = Firebase.firestore
+        val games = db.collection("games")
+        games.document(game.id!!)
+            .set(dataMap)
+            .addOnSuccessListener { Log.d(database_log, "prescribe new game") }
+            .addOnFailureListener { Log.d(database_log, "prescribe new game fail")}
+        (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
+        ui.loading.text = "${gamesList.size} Exercise(s)"
+
+        ui.undoHint.visibility = View.INVISIBLE
+        ui.undoYes.visibility = View.INVISIBLE
+        ui.undoNo.visibility = View.INVISIBLE
+        undoId = ""
+    }
+
+    fun undoNo(view: View) {
+        ui.undoHint.visibility = View.INVISIBLE
+        ui.undoYes.visibility = View.INVISIBLE
+        ui.undoNo.visibility = View.INVISIBLE
+
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/${undoId}.jpg")
+        storageRef.delete()
+
+        undoId = ""
     }
 }
