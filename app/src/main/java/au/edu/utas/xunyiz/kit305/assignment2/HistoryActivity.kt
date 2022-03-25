@@ -251,6 +251,16 @@ class HistoryActivity : AppCompatActivity() {
             }
     }
 
+    fun seeAll(view: View) {
+        gamesList.clear()
+        for (game in gameOriginal) {
+            gamesList.add(game)
+        }
+
+        (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
+        ui.loading.text = "${gamesList.size} Exercise(s)"
+    }
+
 
     fun history1(view: View) {
         if (!historyNow) {
@@ -280,6 +290,7 @@ class HistoryActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener {  result ->
                 gamesList.clear()
+                gameOriginal.clear()
                 (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
                 Log.d(database_log, "----")
                 for (document in result) {
@@ -299,10 +310,9 @@ class HistoryActivity : AppCompatActivity() {
                         game.rightClick = rightClick
                         game.totalClick = totalClick
                         gamesList.add(game)
+                        gameOriginal.add(game)
                     }
                 }
-
-                gameOriginal = gamesList
 
                 (ui.historyList.adapter as HistoryAdapter).notifyDataSetChanged()
                 ui.loading.text = "${gamesList.size} Exercise(s)"
