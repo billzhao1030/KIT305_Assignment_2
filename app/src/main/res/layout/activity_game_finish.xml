@@ -23,10 +23,10 @@
         android:id="@+id/imageView"
         android:layout_width="400dp"
         android:layout_height="400dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gameSummary"
+        app:layout_constraintTop_toBottomOf="@+id/selectImage"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
@@ -40,7 +40,7 @@
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/gameSummary" />
 
     <Button
         android:id="@+id/selectImage"

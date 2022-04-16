@@ -1,6 +1,8 @@
 package au.edu.utas.xunyiz.kit305.assignment2
 
+import android.graphics.Color
 import android.media.Image
+import android.util.Log
 
 class Game {
     var id: String? = null
@@ -39,22 +41,32 @@ class Game {
         var type = if (gameType == true) " number in order" else " matching numbers"
 
         return "Congratulations!\nYou have completed ${type} exercise\n" +
-                "With ${repetition} round in total"
+                "With ${repetition} round(s) in total"
     }
 
     fun toSummary(): String {
         var type = if (gameType == true) " number in order" else " matching numbers"
 
         return "Congratulations!\nYou have completed ${type} exercise\n" +
-                "From: ${startTime}\nTo: ${endTime}\n" + "With ${repetition} round in total"
+                "From: ${startTime}\nTo: ${endTime}\n" + "With ${repetition} round(s) in total"
     }
 
     fun toTable(): String {
-        var type = if (gameType == true) " number in order, " else " matching numbers, "
+        var type = if (gameType == true) " number in order," else " matching numbers,"
         var complete = if (completed == true) "completed" else "not completed"
+        var str = "["
+        for (buttonClick in buttonList!!) {
+            if (buttonClick.containsValue(10)|| buttonClick.containsValue(20) || buttonClick.containsValue(30) || buttonClick.containsValue(40) || buttonClick.containsValue(50)) {
+                var temp = "${buttonClick.keys} : Button ${buttonClick.values}"
+                str += "{${temp.substring(0, temp.length - 2)}]},"
+            } else {
+                str += "{${buttonClick.keys} : Button ${buttonClick.values}},"
+            }
+        }
+        str += "]"
 
         var prescribed = if (gameType == true) ", total press of buttons: ${totalClick}, " +
-                "correct press of buttons: ${rightClick}, The button list: ${buttonList} " else ""
+                "correct press of buttons: ${rightClick}, The button list: ${str} " else ""
 
         return "Exercise:${type} ${complete}, Start at: ${startTime}, End at: ${endTime}," +
                 " ${repetition} round(s) in total${prescribed}"

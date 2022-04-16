@@ -63,7 +63,8 @@ class HistoryActivity : AppCompatActivity() {
         popupHistory = popupHistoryBuilder.create()
 
         ui.historyBack.setOnClickListener {
-            finish()
+            var back = Intent(this, MainActivity::class.java)
+            startActivity(back)
         }
 
         ui.historyList.adapter = HistoryAdapter(history = gamesList)
@@ -268,6 +269,10 @@ class HistoryActivity : AppCompatActivity() {
             getGameFromDB()
             ui.history1.setBackgroundResource(R.drawable.button_default)
             ui.history2.setBackgroundResource(R.drawable.button_default_highlight)
+
+            if (undoId != "") {
+                undoNo(ui.undoNo)
+            }
         }
     }
 
@@ -277,6 +282,10 @@ class HistoryActivity : AppCompatActivity() {
             getGameFromDB()
             ui.history2.setBackgroundResource(R.drawable.button_default)
             ui.history1.setBackgroundResource(R.drawable.button_default_highlight)
+
+            if (undoId != "") {
+                undoNo(ui.undoNo)
+            }
         }
     }
 
@@ -427,6 +436,10 @@ class HistoryActivity : AppCompatActivity() {
         val storageRef = FirebaseStorage.getInstance().reference.child("images/${undoId}.jpg")
         storageRef.delete()
 
+        getGameFromDB()
+
         undoId = ""
     }
+
+
 }

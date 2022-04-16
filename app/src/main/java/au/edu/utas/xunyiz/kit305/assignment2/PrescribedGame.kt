@@ -21,6 +21,8 @@ import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.random.Random
+import kotlin.random.Random.Default.nextInt
 
 class PrescribedGame : AppCompatActivity(), View.OnClickListener {
     private lateinit var ui: ActivityPrescribedGameBinding
@@ -343,7 +345,7 @@ class PrescribedGame : AppCompatActivity(), View.OnClickListener {
                                 reposition(id_list)
                             }
                         } else {
-                            ui.progressText.text = "Round ${roundCompleted}"
+                            ui.progressText.text = "Round ${roundCompleted + 1}"
                             reposition(id_list)
                         }
                     }
